@@ -35,12 +35,52 @@ h2 {
   font-family: var(--font-headings), Georgia, serif;
 }
 
+/* Micro-animations (transform/opacity uniquement → performantes).
+   Le hero (LCP) n'anime QUE le transform, opacité = 1, pour ne pas dégrader le LCP. */
+@keyframes hero-in {
+  from {
+    transform: translateY(16px);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes zoom-in {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@utility animate-hero-in {
+  animation: hero-in 0.7s ease-out both;
+}
+@utility animate-zoom-in {
+  animation: zoom-in 1.4s ease-out both;
+}
+@utility animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
 /* Accessibilité : couper les animations si l'utilisateur le demande. */
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
   ::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

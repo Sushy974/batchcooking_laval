@@ -6,16 +6,16 @@ export function PlatCard({ plat }: { plat: Plat }) {
   return (
     <Link
       href={`/plats/${plat.slug}`}
-      className="group overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-shadow hover:shadow-md"
+      className="group overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md"
     >
-      <div className="relative aspect-[4/3] bg-secondary">
+      <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
         {plat.image_principale ? (
           <Image
             src={plat.image_principale}
             alt={plat.nom}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-3xl">

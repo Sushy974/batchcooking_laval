@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FormuleCard } from "@/components/formule-card";
 import { Icon } from "@/components/icon";
 import { PlatCard } from "@/components/plat-card";
+import { Reveal } from "@/components/reveal";
 import {
   getAccueil,
   getConfig,
@@ -28,9 +29,9 @@ export default async function Home() {
 
   return (
     <>
-      {/* Hero */}
+      {/* Hero — animations en transform uniquement (opacité = 1) pour préserver le LCP. */}
       <section className="grid items-stretch gap-8 lg:grid-cols-2">
-        <div className="flex flex-col justify-center gap-6 px-6 py-16 sm:px-12 lg:py-20">
+        <div className="animate-hero-in flex flex-col justify-center gap-6 px-6 py-16 sm:px-12 lg:py-20">
           <div className="flex flex-col gap-3">
             <span className="text-xs font-semibold uppercase tracking-widest text-primary">
               Batch cooking à domicile
@@ -47,13 +48,13 @@ export default async function Home() {
           <div className="flex flex-wrap items-center gap-4">
             <Link
               href={hero?.cta_lien ?? "/formules"}
-              className="rounded-lg bg-primary px-7 py-3 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+              className="rounded-lg bg-primary px-7 py-3 text-base font-semibold text-primary-foreground transition duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-lg active:scale-95"
             >
               {hero?.cta_label ?? "Voir les formules"}
             </Link>
             <Link
               href="/contact"
-              className="rounded-lg border border-primary bg-transparent px-7 py-3 text-base font-semibold text-primary transition-colors hover:bg-primary/5"
+              className="rounded-lg border border-primary bg-transparent px-7 py-3 text-base font-semibold text-primary transition duration-200 hover:-translate-y-0.5 hover:bg-primary/5 active:scale-95"
             >
               Me contacter
             </Link>
@@ -68,7 +69,7 @@ export default async function Home() {
             alt=""
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
+            className="animate-zoom-in object-cover"
             priority
           />
           {/* Dégradé : fond l'image dans le bloc texte (bord gauche). */}
@@ -80,6 +81,13 @@ export default async function Home() {
                 "linear-gradient(to right, var(--color-background) 0%, transparent 20%)",
             }}
           />
+          {/* Badge flottant décoratif. */}
+          <span
+            aria-hidden
+            className="animate-float absolute bottom-6 right-6 rounded-full bg-background/90 px-4 py-2 text-sm font-semibold shadow-lg backdrop-blur"
+          >
+            🥕 100% fait maison
+          </span>
         </div>
       </section>
 
@@ -88,16 +96,17 @@ export default async function Home() {
         <section className="mx-auto max-w-6xl px-6 py-14 sm:px-12">
           <div className="grid gap-6 sm:grid-cols-3">
             {contenu.arguments.map((arg, i) => (
-              <div
-                key={i}
-                className="flex flex-col gap-3 rounded-xl border border-border bg-background p-6"
-              >
-                <span className="flex size-10 items-center justify-center rounded-lg bg-secondary text-primary">
-                  <Icon name={arg.icone} className="size-5" />
-                </span>
-                <h3 className="text-base font-semibold">{arg.titre}</h3>
-                <p className="text-sm leading-relaxed text-warm">{arg.texte}</p>
-              </div>
+              <Reveal key={i} delayMs={i * 120}>
+                <div className="group flex h-full flex-col gap-3 rounded-xl border border-border bg-background p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
+                  <span className="flex size-10 items-center justify-center rounded-lg bg-secondary text-primary transition-transform duration-300 group-hover:scale-110">
+                    <Icon name={arg.icone} className="size-5" />
+                  </span>
+                  <h3 className="text-base font-semibold">{arg.titre}</h3>
+                  <p className="text-sm leading-relaxed text-warm">
+                    {arg.texte}
+                  </p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </section>
@@ -112,13 +121,15 @@ export default async function Home() {
               href="/formules"
               linkLabel="Toutes les formules"
             />
-            <div className="flex gap-6 overflow-x-auto pb-2">
-              {formules.map((f) => (
-                <div key={f.id} className="w-72 shrink-0">
-                  <FormuleCard formule={f} />
-                </div>
-              ))}
-            </div>
+            <Reveal>
+              <div className="flex gap-6 overflow-x-auto pb-2">
+                {formules.map((f) => (
+                  <div key={f.id} className="w-72 shrink-0">
+                    <FormuleCard formule={f} />
+                  </div>
+                ))}
+              </div>
+            </Reveal>
           </div>
         </section>
       )}
@@ -132,8 +143,10 @@ export default async function Home() {
             linkLabel="Voir le menu complet"
           />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {plats.map((p) => (
-              <PlatCard key={p.id} plat={p} />
+            {plats.map((p, i) => (
+              <Reveal key={p.id} delayMs={i * 80}>
+                <PlatCard plat={p} />
+              </Reveal>
             ))}
           </div>
         </section>
@@ -143,24 +156,26 @@ export default async function Home() {
       {contenu?.section_zone && (
         <section className="bg-secondary py-14">
           <div className="mx-auto max-w-6xl px-6 sm:px-12">
-            <h2 className="mb-3 text-3xl font-bold">
-              {contenu.section_zone.titre}
-            </h2>
-            <p className="mb-8 max-w-2xl leading-relaxed text-warm">
-              {contenu.section_zone.texte}
-            </p>
-            {config?.communes_couvertes?.length ? (
-              <ul className="flex flex-wrap gap-2">
-                {config.communes_couvertes.map((c) => (
-                  <li
-                    key={c}
-                    className="rounded-full border border-border bg-cream px-3 py-1.5 text-xs font-medium"
-                  >
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
+            <Reveal>
+              <h2 className="mb-3 text-3xl font-bold">
+                {contenu.section_zone.titre}
+              </h2>
+              <p className="mb-8 max-w-2xl leading-relaxed text-warm">
+                {contenu.section_zone.texte}
+              </p>
+              {config?.communes_couvertes?.length ? (
+                <ul className="flex flex-wrap gap-2">
+                  {config.communes_couvertes.map((c) => (
+                    <li
+                      key={c}
+                      className="rounded-full border border-border bg-cream px-3 py-1.5 text-xs font-medium transition-colors hover:border-primary hover:text-primary"
+                    >
+                      {c}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </Reveal>
           </div>
         </section>
       )}
@@ -168,7 +183,7 @@ export default async function Home() {
       {/* CTA final */}
       {contenu?.cta_final && (
         <section className="bg-dark px-6 py-20 text-center">
-          <div className="mx-auto flex max-w-xl flex-col items-center gap-5">
+          <Reveal className="mx-auto flex max-w-xl flex-col items-center gap-5">
             <h2 className="text-4xl font-bold leading-tight text-dark-foreground">
               {contenu.cta_final.titre}
             </h2>
@@ -177,11 +192,11 @@ export default async function Home() {
             </p>
             <Link
               href={contenu.cta_final.lien}
-              className="rounded-lg bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+              className="rounded-lg bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-lg active:scale-95"
             >
               {contenu.cta_final.label}
             </Link>
-          </div>
+          </Reveal>
         </section>
       )}
     </>
@@ -202,9 +217,12 @@ function SectionTitle({
       <h2 className="text-3xl font-bold">{title}</h2>
       <Link
         href={href}
-        className="shrink-0 text-sm font-semibold text-primary hover:underline"
+        className="group shrink-0 text-sm font-semibold text-primary"
       >
-        {linkLabel} →
+        {linkLabel}{" "}
+        <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+          →
+        </span>
       </Link>
     </div>
   );

@@ -12,7 +12,7 @@ export function FormuleCard({ formule }: { formule: Formule }) {
   return (
     <Link
       href={`/formules/${formule.slug}`}
-      className="group flex flex-col rounded-2xl border border-border bg-background p-5 shadow-sm transition-shadow hover:shadow-md"
+      className="group flex h-full flex-col rounded-2xl border border-border bg-background p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md"
     >
       <div className="flex items-baseline justify-between gap-2">
         <h3 className="text-lg font-semibold">{formule.nom}</h3>
