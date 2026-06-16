@@ -73,6 +73,40 @@ h2 {
   animation: float 5s ease-in-out infinite;
 }
 
+/* Mascotte du chatbot : se dandine, se penche et se déforme légèrement. */
+@keyframes mascotte {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1, 1);
+  }
+  25% {
+    transform: translateY(-3px) rotate(-4deg) scale(1.02, 0.98);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg) scale(0.97, 1.03);
+  }
+  75% {
+    transform: translateY(-2px) rotate(4deg) scale(1.02, 0.98);
+  }
+}
+@keyframes chat-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-mascotte {
+  animation: mascotte 3.5s ease-in-out infinite;
+}
+@utility animate-chat-pop {
+  animation: chat-pop 0.25s ease-out both;
+}
+
 /* Accessibilité : couper les animations si l'utilisateur le demande. */
 @media (prefers-reduced-motion: reduce) {
   *,

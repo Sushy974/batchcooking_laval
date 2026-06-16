@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, PT_Serif } from "next/font/google";
 
+import { EmmaChatbot } from "@/components/emma-chatbot";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getConfig } from "@/lib/queries";
@@ -65,6 +66,7 @@ export default async function RootLayout({
         <SiteHeader config={config} />
         <main className="flex-1">{children}</main>
         <SiteFooter config={config} />
+        <EmmaChatbot />
       </body>
     </html>
   );
