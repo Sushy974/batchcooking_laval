@@ -31,12 +31,31 @@ export default async function RootLayout({
 }>) {
   const config = await getConfig();
 
+  // Données structurées Schema.org : important pour un service LOCAL (SEO).
+  const jsonLd = config
+    ? {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        name: config.nom_societe,
+        telephone: config.telephone,
+        email: config.email,
+        description: config.seo_defaut?.description,
+        areaServed: config.communes_couvertes,
+      }
+    : null;
+
   return (
     <html
       lang="fr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {jsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        )}
         {config?.banniere_active && config.banniere_message && (
           <div className="bg-brand px-4 py-2 text-center text-sm font-medium text-brand-foreground">
             {config.banniere_message}

@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Le Batchcooking d'Emma — Monorepo
 
-## Getting Started
+Site **vitrine** d'un service de **batchcooking à domicile** (Laval).
+Emma se déplace chez ses clients pour cuisiner leurs repas de la semaine.
+Le site **affiche** les offres ; **aucun paiement / aucune vente en ligne**.
 
-First, run the development server:
+> 📋 Spécifications complètes : [`base_connaissance/cahier_des_charges.md`](base_connaissance/cahier_des_charges.md)
+> 🧭 Journal de travaux (handoff) : [`claude/travaux/`](claude/travaux)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Structure (npm workspaces)
+
+```
+apps/vitrine/      Next.js public (SSR/ISR) — port 3000
+apps/admin/        Next.js back-office       — port 3001
+packages/core/     @batchcooking/core — domaine partagé
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`packages/core` contient TOUT le domaine : types, schémas Zod, repositories,
+use cases, conteneur d'injection, init Firebase. Les apps le transpilent
+(`transpilePackages`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Architecture : Clean Architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Flux strict, à sens unique :
 
-## Learn More
+```
+UI → UseCase → Repository (abstrait) → Fake (dev) | Firestore (staging/prod)
+```
 
-To learn more about Next.js, take a look at the following resources:
+- L'UI ne touche jamais Firestore ni les repositories : elle passe par les **use cases**.
+- Chaque entité a **3 classes** : mère abstraite + `Fake…` + `Firestore…`.
+- Le **conteneur** (`packages/core/src/container.ts`) choisit l'implémentation selon
+  `NEXT_PUBLIC_DATA_SOURCE` et expose le singleton `useCases`.
+- Injection côté client : `@batchcooking/core/client` (`UseCasesProvider`, `useUseCases`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environnements
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Env | Données | Clés | Lancer |
+|---|---|---|---|
+| development | `mock` (fixtures locales) | aucune | `npm run dev:vitrine` / `npm run dev:admin` |
+| staging | Firestore test | `apps/<app>/.env.staging.local` | `npm run dev:staging -w vitrine` |
+| production | Firestore client | `apps/<app>/.env.production.local` | `npm run build:production -w vitrine` |
 
-## Deploy on Vercel
+En **dev**, tout tourne hors-ligne avec de fausses données ; vitrine et admin ne
+partagent pas leur état (normal : chaque app a ses fixtures en mémoire).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Démarrer
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm install
+npm run dev:vitrine   # http://localhost:3000
+npm run dev:admin     # http://localhost:3001
+```
+
+VS Code : 6 configurations dans `.vscode/launch.json`
+(`vitrine_dev/stg/prod`, `admin_dev/stg/prod`).
+
+## Scripts (racine)
+
+```bash
+npm run typecheck     # tsc sur tous les workspaces
+npm run lint          # eslint sur tous les workspaces
+npm run build:vitrine
+npm run build:admin
+```
+
+## Brancher Firebase (plus tard)
+
+1. Créer un projet Firebase (Firestore + Storage + Auth).
+2. Remplir `apps/<app>/.env.staging.local` (puis `.env.production.local`).
+3. Mettre l'UID d'Emma dans [`firestore.rules`](firestore.rules) et déployer les règles.
+4. Configurer `images.remotePatterns` dans les `next.config.ts` pour les images Storage.
