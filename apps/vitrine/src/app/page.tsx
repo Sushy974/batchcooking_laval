@@ -71,6 +71,15 @@ export default async function Home() {
             className="object-cover"
             priority
           />
+          {/* Dégradé : fond l'image dans le bloc texte (bord gauche). */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to right, var(--color-background) 0%, transparent 20%)",
+            }}
+          />
         </div>
       </section>
 
