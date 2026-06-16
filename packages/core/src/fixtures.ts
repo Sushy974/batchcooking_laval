@@ -159,27 +159,45 @@ export const fixturePages: Page[] = [
     seo: fixtureConfig.seo_defaut,
     data_contenu: {
       hero: {
-        titre: "Emma cuisine vos repas de la semaine, chez vous",
-        sous_titre: "Le batchcooking à domicile, à Laval et alentour.",
+        titre: "Cuisinons ensemble, profitez toute la semaine",
+        sous_titre:
+          "Emma vient chez vous préparer vos repas de la semaine. Des plats maison, savoureux et équilibrés, pensés pour vous simplifier la vie.",
         image: "",
-        cta_label: "Découvrir les formules",
+        cta_label: "Voir les formules",
         cta_lien: "/formules",
       },
       arguments: [
-        { icone: "clock", titre: "Gagnez du temps", texte: "Plus de corvée de cuisine le soir." },
-        { icone: "heart", titre: "Fait maison", texte: "Des plats sains, adaptés à vos goûts." },
-        { icone: "leaf", titre: "De saison", texte: "Des produits frais et de saison." },
+        {
+          icone: "chef-hat",
+          titre: "Cuisinière passionnée",
+          texte:
+            "Emma cuisine pour vous comme pour sa propre famille : produits de saison, recettes maison, zéro compromis sur la qualité.",
+        },
+        {
+          icone: "calendar",
+          titre: "Une semaine sereine",
+          texte:
+            "Fini le stress du « qu'est-ce qu'on mange ce soir ? » — vos repas sont prêts, stockés, étiquetés.",
+        },
+        {
+          icone: "leaf",
+          titre: "Équilibré & savoureux",
+          texte:
+            "Des menus variés, équilibrés nutritionnellement, adaptés à vos goûts et contraintes alimentaires.",
+        },
       ],
       section_formules: { titre: "Mes formules", afficher: true },
-      section_plats: { titre: "Un aperçu de mes plats", afficher: true },
+      section_plats: { titre: "Au menu cette semaine", afficher: true },
       section_zone: {
-        titre: "Où j'interviens",
-        texte: "Je me déplace à Laval et dans un rayon de 20 km.",
+        titre: "Zone d'intervention",
+        texte:
+          "Emma se déplace chez vous à Laval et dans un rayon de 20 km. Vous ne voyez pas votre commune ? Contactez-la, elle étudiera votre demande avec plaisir.",
       },
       cta_final: {
-        titre: "Envie de tester ?",
-        texte: "Contactez-moi pour organiser votre première séance.",
-        label: "Me contacter",
+        titre: "Prête à cuisiner pour vous dès cette semaine ?",
+        texte:
+          "Réservez votre première session et passez à un mode de vie plus serein. Emma vous rappelle sous 24h.",
+        label: "Prendre contact avec Emma",
         lien: "/contact",
       },
     },

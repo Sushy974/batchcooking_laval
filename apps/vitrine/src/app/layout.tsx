@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, PT_Serif } from "next/font/google";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getConfig } from "@/lib/queries";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ptSerif = PT_Serif({
+  variable: "--font-pt-serif",
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -47,9 +48,9 @@ export default async function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${ptSerif.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col font-body">
         {jsonLd && (
           <script
             type="application/ld+json"
@@ -57,7 +58,7 @@ export default async function RootLayout({
           />
         )}
         {config?.banniere_active && config.banniere_message && (
-          <div className="bg-brand px-4 py-2 text-center text-sm font-medium text-brand-foreground">
+          <div className="bg-primary px-4 py-2 text-center text-sm font-medium text-primary-foreground">
             {config.banniere_message}
           </div>
         )}

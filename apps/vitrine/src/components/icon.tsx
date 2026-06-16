@@ -1,4 +1,5 @@
 import {
+  Calendar,
   ChefHat,
   Clock,
   Heart,
@@ -11,6 +12,7 @@ import {
 
 // Mappe les noms d'icônes (stockés en base / fixtures) vers les composants Lucide.
 const ICONS: Record<string, LucideIcon> = {
+  calendar: Calendar,
   clock: Clock,
   heart: Heart,
   leaf: Leaf,

@@ -1,0 +1,40 @@
+---
+description: OPTIMISER la performance web (images, cache, LCP, HTTP) LORS de la création d'un site/app web, surtout en export statique
+globs: **/*.tsx, **/*.jsx, next.config.*, **/sitemap.*, **/*.html
+alwaysApply: true
+---
+
+Objectif : viser Lighthouse Performance ≥ 90 (mobile) dès le départ.
+
+## Images (impact #1)
+- ✅ Pré-compresser toutes les images et servir du **WebP/AVIF** (pas de PNG/JPEG lourd brut).
+- ✅ **Dimensionner à la taille d'affichage réelle.** ⚠️ En `images.unoptimized: true`, `sizes` ne génère **PAS de `srcset`** → l'image unique est servie partout : viser **≤ ~1,5× l'affichage max**. Plafonds concrets (dim + poids) dans la rule **`7-compresser-images`** (hero ≤ 1300px <80Ko, showcase 1000px <60Ko…).
+- ❌ Ne jamais committer un visuel oversize (vécu : `athena.webp` 2400×1600/150 Ko, hero 1634px/98 Ko → flaggés « Properly size images »).
+
+## LCP (Largest Contentful Paint)
+- ✅ Marquer l'image hero `priority` / preload.
+- ❌ Ne **jamais animer `opacity` de 0** sur l'élément LCP (texte ou image) — il reste invisible le temps de l'anim → LCP dégradé. Animer plutôt `transform` (translate/scale) en gardant `opacity:1`.
+
+## Cache & HTTP serveur
+- ✅ `Cache-Control` longue durée + `immutable` sur les assets **hashés** (`/_next/static/*`, `/assets/*`) : 1 an. Sur les HTML : court ou `no-cache`.
+- ✅ S'assurer que le serveur envoie `ETag`/`Last-Modified` (validation conditionnelle).
+- ✅ Activer **HTTP/2** et **HTTPS** (+ redirection HTTP→HTTPS).
+- Apache/AlwaysData : régler le cache via un fichier `.htaccess` (`<FilesMatch>` + `Header set Cache-Control`).
+
+## Animations
+- ✅ Toujours couper les animations sous `@media (prefers-reduced-motion: reduce)`.
+- ✅ Préférer le CSS (transform/opacity) à du JS lourd ; éviter d'embarquer three.js/GSAP si une version CSS suffit.
+
+## JS
+- ✅ Limiter le JS non utilisé (code-splitting, imports dynamiques pour le lourd).
+- ✅ **`browserslist` moderne** dans `package.json` (ex. `chrome >= 100`, `safari >= 15.4`, `not dead`) → le compilateur **n'injecte plus les polyfills** ES2022 inutiles (`Array.at/flat/flatMap`, `Object.fromEntries/hasOwn`, `String.trim*`). Sinon Lighthouse flagge « Ancien JavaScript ». Sans `browserslist`, la cible par défaut vise des navigateurs anciens.
+  - ⚠️ **Nuance** : même avec `browserslist` moderne, ~13 Ko de polyfills peuvent **subsister** car ils proviennent de **dépendances déjà compilées** (`node_modules` livrés en ES5+polyfills), que `browserslist` ne re-transpile pas. **ROI faible → ne pas s'acharner** (vérifier la cible effective : `npx browserslist`).
+- ✅ **Scripts tiers lourds (analytics, tag manager, widgets)** : ne **jamais** les charger au rendu initial. Les **différer** hors chemin critique — au **consentement** (le plus efficace : aucun chargement tant que l'utilisateur n'a pas accepté) ou via `lazyOnload`. Vécu : GA4/GTM `gtag.js` ≈**156 Kio** chargé d'emblée = plus gros poste « JS inutilisé » Lighthouse → différé au clic « Accepter » (cf. DEC-003).
+
+## Cache images non-hashées
+- ✅ Les images de contenu (`/realisations/*.webp`, `/hero.webp`…) ne sont **pas** content-addressed → cache **moyen** (ex. **30 jours**), pas `immutable`. Les assets hashés `/_next/static/*` restent à 1 an immutable.
+
+## Audits SEO/perf tiers — méfiance pendant une bascule
+- ⚠️ Un audit SEO/perf **tiers** lancé **pendant une bascule DNS/cert** (ou si le cert servi ne matche pas l'hôte) produit des **faux positifs** : « page inaccessible / Taille du DOM non récupérée », « pas adaptée aux mobiles / viewport manquant », « données structurées en erreur ». Cause : le crawler **ne se connecte pas** (cert invalide) ou **ne rend pas le JS** (site en export statique React).
+- ✅ **Vérifier l'état réel AVANT d'agir** : `curl` HTTP 200, présence de `<meta name="viewport">`, JSON-LD rendu (`grep '@type'`), et valider les données structurées via le **Rich Results Test de Google** (l'autorité, pas l'outil tiers). Ne corriger que les points confirmés (vécu : seul vrai point d'un audit = méta description trop longue).
+- ⚠️ **Validateurs de données structurées tiers** : beaucoup sont orientés e-commerce/contenu (Product, Article) et flaggent des types **pourtant valides** comme « non supportés / représentation incomplète » — vécu avec `ProfessionalService` (sous-type LocalBusiness, **supporté par Google**). Faire foi du **Schema Markup Validator** (validator.schema.org) et du **Rich Results Test** de Google, pas de l'outil tiers. Ne pas dégrader un type valide juste pour faire taire un outil.

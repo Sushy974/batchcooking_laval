@@ -43,7 +43,7 @@ export default async function FormulePage({
     <article className="mx-auto max-w-5xl px-4 py-10">
       <Link
         href="/formules"
-        className="inline-flex items-center gap-1 text-sm text-muted hover:text-foreground"
+        className="inline-flex items-center gap-1 text-sm text-warm hover:text-foreground"
       >
         <ArrowLeft className="size-4" aria-hidden />
         Toutes les formules
@@ -51,7 +51,7 @@ export default async function FormulePage({
 
       <div className="mt-6 grid gap-8 md:grid-cols-2">
         {/* Visuel */}
-        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-stone-100">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-secondary">
           {formule.image_principale ? (
             <Image
               src={formule.image_principale}
@@ -71,7 +71,7 @@ export default async function FormulePage({
         {/* Infos principales */}
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{formule.nom}</h1>
-          <p className="mt-2 text-2xl font-bold text-brand">{formule.prix} €</p>
+          <p className="mt-2 text-2xl font-bold text-primary">{formule.prix} €</p>
           <p className="mt-4 text-foreground/80">{formule.description}</p>
 
           <ul className="mt-6 grid grid-cols-3 gap-3 text-center text-sm">
@@ -80,7 +80,7 @@ export default async function FormulePage({
             <Fact icon={<Clock className="size-5" />} value={`${formule.duree_heures} h`} label="sur place" />
           </ul>
 
-          <span className="mt-6 inline-flex rounded-full bg-brand/10 px-3 py-1 text-sm font-medium text-brand">
+          <span className="mt-6 inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
             {COURSES_LABEL[formule.courses]}
           </span>
 
@@ -93,7 +93,7 @@ export default async function FormulePage({
 
           <Link
             href="/contact"
-            className="mt-8 inline-flex rounded-full bg-brand px-6 py-3 text-sm font-medium text-brand-foreground transition-opacity hover:opacity-90"
+            className="mt-8 inline-flex rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
             Réserver cette formule
           </Link>
@@ -103,12 +103,12 @@ export default async function FormulePage({
       {/* Inclus / non inclus */}
       <div className="mt-12 grid gap-8 sm:grid-cols-2">
         {formule.inclus.length > 0 && (
-          <section className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+          <section className="rounded-2xl border border-border bg-background p-6 shadow-sm">
             <h2 className="mb-3 font-semibold">Ce qui est inclus</h2>
             <ul className="space-y-2 text-sm">
               {formule.inclus.map((item) => (
                 <li key={item} className="flex items-start gap-2">
-                  <Check className="mt-0.5 size-4 shrink-0 text-brand" aria-hidden />
+                  <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
                   {item}
                 </li>
               ))}
@@ -117,12 +117,12 @@ export default async function FormulePage({
         )}
 
         {formule.non_inclus.length > 0 && (
-          <section className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+          <section className="rounded-2xl border border-border bg-background p-6 shadow-sm">
             <h2 className="mb-3 font-semibold">Non inclus</h2>
-            <ul className="space-y-2 text-sm text-muted">
+            <ul className="space-y-2 text-sm text-warm">
               {formule.non_inclus.map((item) => (
                 <li key={item} className="flex items-start gap-2">
-                  <X className="mt-0.5 size-4 shrink-0 text-stone-400" aria-hidden />
+                  <X className="mt-0.5 size-4 shrink-0 text-warm" aria-hidden />
                   {item}
                 </li>
               ))}
@@ -144,10 +144,10 @@ function Fact({
   label: string;
 }) {
   return (
-    <li className="rounded-2xl border border-black/5 bg-white p-3 shadow-sm">
-      <span className="mx-auto flex justify-center text-brand">{icon}</span>
+    <li className="rounded-2xl border border-border bg-background p-3 shadow-sm">
+      <span className="mx-auto flex justify-center text-primary">{icon}</span>
       <span className="mt-1 block font-bold">{value}</span>
-      <span className="block text-xs text-muted">{label}</span>
+      <span className="block text-xs text-warm">{label}</span>
     </li>
   );
 }

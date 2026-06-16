@@ -1,25 +1,46 @@
 @import "tailwindcss";
 
-:root {
-  --background: #fbf9f4; /* crème */
-  --foreground: #1c1917; /* stone-900 */
-  --brand: #15803d; /* green-700 */
-  --brand-foreground: #ffffff;
-  --muted: #78716c; /* stone-500 */
-}
+/* Thème global de la vitrine (s'applique à toutes les pages). */
+@theme {
+  --color-background: #fffbf7;
+  --color-foreground: #2c1a11;
+  --color-border: #f2e6dc;
+  --color-primary: #e65f2b;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f7ede2;
+  --color-muted: #f2e6dc;
+  --color-muted-foreground: #5c4d43;
+  --color-dark: #2c1a11;
+  --color-dark-foreground: #ffffff;
+  --color-cream: #f7ede2;
+  --color-warm: #5c4d43;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
-  --color-muted: var(--muted);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --radius-full: 999px;
+
+  /* Polices : corps = Inter, titres = PT Serif (variables posées par next/font). */
+  --font-sans: var(--font-inter);
+  --font-body: var(--font-inter);
+  --font-headings: var(--font-pt-serif);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* Titres principaux en serif (PT Serif) sur toutes les pages. */
+h1,
+h2 {
+  font-family: var(--font-headings), Georgia, serif;
+}
+
+/* Accessibilité : couper les animations si l'utilisateur le demande. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -26,18 +26,18 @@ export default async function ContactPage() {
     <div className="mx-auto max-w-2xl px-4 py-12">
       <header className="mb-8 text-center">
         <h1 className="text-3xl font-bold tracking-tight">{page.titre}</h1>
-        {intro && <p className="mt-3 text-muted">{intro}</p>}
+        {intro && <p className="mt-3 text-warm">{intro}</p>}
       </header>
 
       <div className="space-y-3">
         {afficher_telephone && config?.telephone && (
           <a
             href={`tel:${config.telephone.replace(/\s/g, "")}`}
-            className="flex items-center gap-3 rounded-2xl border border-black/5 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+            className="flex items-center gap-3 rounded-2xl border border-border bg-background p-5 shadow-sm transition-shadow hover:shadow-md"
           >
-            <Phone className="size-5 text-brand" aria-hidden />
+            <Phone className="size-5 text-primary" aria-hidden />
             <span>
-              <span className="block text-xs text-muted">Téléphone</span>
+              <span className="block text-xs text-warm">Téléphone</span>
               <span className="font-medium">{config.telephone}</span>
             </span>
           </a>
@@ -46,11 +46,11 @@ export default async function ContactPage() {
         {afficher_email && config?.email && (
           <a
             href={`mailto:${config.email}`}
-            className="flex items-center gap-3 rounded-2xl border border-black/5 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+            className="flex items-center gap-3 rounded-2xl border border-border bg-background p-5 shadow-sm transition-shadow hover:shadow-md"
           >
-            <Mail className="size-5 text-brand" aria-hidden />
+            <Mail className="size-5 text-primary" aria-hidden />
             <span>
-              <span className="block text-xs text-muted">Email</span>
+              <span className="block text-xs text-warm">Email</span>
               <span className="font-medium">{config.email}</span>
             </span>
           </a>
@@ -61,21 +61,21 @@ export default async function ContactPage() {
             href={`https://instagram.com/${instagram}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-2xl border border-black/5 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+            className="flex items-center gap-3 rounded-2xl border border-border bg-background p-5 shadow-sm transition-shadow hover:shadow-md"
           >
-            <AtSign className="size-5 text-brand" aria-hidden />
+            <AtSign className="size-5 text-primary" aria-hidden />
             <span>
-              <span className="block text-xs text-muted">Instagram</span>
+              <span className="block text-xs text-warm">Instagram</span>
               <span className="font-medium">@{instagram}</span>
             </span>
           </a>
         )}
 
         {config?.zone_intervention && (
-          <div className="flex items-center gap-3 rounded-2xl border border-black/5 bg-white p-5 shadow-sm">
-            <MapPin className="size-5 text-brand" aria-hidden />
+          <div className="flex items-center gap-3 rounded-2xl border border-border bg-background p-5 shadow-sm">
+            <MapPin className="size-5 text-primary" aria-hidden />
             <span>
-              <span className="block text-xs text-muted">Zone d&apos;intervention</span>
+              <span className="block text-xs text-warm">Zone d&apos;intervention</span>
               <span className="font-medium">{config.zone_intervention}</span>
             </span>
           </div>

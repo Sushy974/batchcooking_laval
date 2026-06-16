@@ -24,16 +24,16 @@ export default async function CommentCaMarchePage() {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <header className="mb-10 text-center">
         <h1 className="text-3xl font-bold tracking-tight">{page.titre}</h1>
-        {intro && <p className="mt-3 text-muted">{intro}</p>}
+        {intro && <p className="mt-3 text-warm">{intro}</p>}
       </header>
 
       <ol className="space-y-6">
         {etapes.map((etape, i) => (
           <li
             key={i}
-            className="flex gap-4 rounded-2xl border border-black/5 bg-white p-5 shadow-sm"
+            className="flex gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm"
           >
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
               {etape.icone ? (
                 <Icon name={etape.icone} className="size-6" />
               ) : (
@@ -43,11 +43,11 @@ export default async function CommentCaMarchePage() {
             <div>
               <h2 className="font-semibold">
                 {etape.numero != null && (
-                  <span className="text-muted">{etape.numero}. </span>
+                  <span className="text-warm">{etape.numero}. </span>
                 )}
                 {etape.titre}
               </h2>
-              <p className="mt-1 text-sm text-muted">{etape.texte}</p>
+              <p className="mt-1 text-sm text-warm">{etape.texte}</p>
             </div>
           </li>
         ))}

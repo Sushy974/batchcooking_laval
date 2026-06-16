@@ -18,7 +18,7 @@ export default async function FormulesPage() {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <header className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Les formules</h1>
-        <p className="mt-2 max-w-2xl text-muted">
+        <p className="mt-2 max-w-2xl text-warm">
           Emma se déplace chez vous pour cuisiner vos repas de la semaine.
           Choisissez la formule adaptée à votre foyer.
         </p>
@@ -31,7 +31,7 @@ export default async function FormulesPage() {
           ))}
         </div>
       ) : (
-        <p className="rounded-2xl border border-dashed border-black/10 p-10 text-center text-muted">
+        <p className="rounded-2xl border border-dashed border-border p-10 text-center text-warm">
           Aucune formule disponible pour le moment.
         </p>
       )}

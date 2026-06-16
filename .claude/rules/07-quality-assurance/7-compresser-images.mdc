@@ -1,0 +1,40 @@
+---
+description: COMPRESSER systématiquement toute image AVANT de l'ajouter au projet (web, Flutter, app — tous projets)
+globs: **/*.png, **/*.jpg, **/*.jpeg, **/*.webp, **/*.gif, **/public/**, **/assets/**, **/static/**
+alwaysApply: true
+---
+
+Règle simple et non négociable : **toute image ajoutée au projet doit être compressée.**
+Une image jamais compressée ne doit jamais être committée.
+
+## Pourquoi
+- Poids = temps de chargement (LCP), conso data mobile, taille du repo et du build.
+- En **export statique web** (`images.unoptimized`) ou en **app Flutter**, l'image est servie **telle quelle** : aucune optimisation au runtime → la compression en amont est obligatoire.
+
+## Quoi faire
+- ✅ **Web** : convertir en **WebP** (ou AVIF) ; transparence conservée par WebP. Garder le PNG uniquement si réellement nécessaire (et l'optimiser).
+- ✅ **Photo** sans transparence : JPEG/WebP qualité ~80. (Vérifier la transparence réelle avant de garder du RGBA : alpha plein → convertir en RGB.)
+- ✅ **Redimensionner à la taille d'affichage max réelle** (ne pas servir du 4000px pour un rendu 600px).
+  ⚠️ **Export statique** (`images.unoptimized`) → **PAS de `srcset`** : l'image unique est servie à tous les écrans. Viser **≤ ~1,5× la taille d'affichage max** (mobile inclus), jamais plus — sinon Lighthouse/PageSpeed flagge « Properly size images / images plus volumineuses que nécessaire » (vécu : `athena.webp` livré en **2400×1600 / 150 Ko** au lieu de 1000px).
+
+### Plafonds concrets (projet creapp-i-web)
+| Usage | Dimension max | Poids cible |
+|---|---|---|
+| **Hero / illustration pleine largeur** | **≤ 1300 px** de large | **< 80 Ko** |
+| **Showcase réalisation** (`/realisations/*.webp`) | **1000 px** de large | **< 60 Ko** |
+| **Galerie** (`gallery/*.webp`, screenshots portrait) | **≤ 1000 px** de large | **< 50 Ko** |
+| **Photo équipe / avatar** | ~2× la taille affichée (~320 px) | **< 40 Ko** |
+| **Logo** | ~2× la hauteur affichée | **< 40 Ko** |
+| **Icône** | — | **< 15 Ko** |
+
+- ✅ **Vérifier dimensions ET poids** après ajout (pas seulement le poids) :
+  `python3 -c "from PIL import Image,os; im=Image.open('x.webp'); print(im.size, os.path.getsize('x.webp')//1024,'Ko')"`
+  Une dimension > plafond → **redimensionner**, ne pas committer tel quel.
+
+## Outils
+- `cwebp -q 82 in.png -o out.webp` · Pillow (`Image.save('x.webp','WEBP',quality=82,method=6)`) · `pngquant`/`optipng`/`jpegoptim` · `sips` (macOS) · Squoosh.
+- Flutter : compresser les assets `pubspec.yaml` de la même façon (WebP supporté).
+
+## Interdictions
+- ❌ Committer un PNG/JPEG > ~300 Ko sans l'avoir compressé.
+- ❌ Mettre une image source non redimensionnée (export brut Figma/photo) directement dans `public/`/`assets/`.

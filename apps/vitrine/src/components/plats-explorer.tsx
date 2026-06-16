@@ -103,7 +103,7 @@ export function PlatsExplorer({
         {aDesFiltres && (
           <button
             onClick={reset}
-            className="text-sm text-brand hover:underline"
+            className="text-sm text-primary hover:underline"
           >
             Réinitialiser les filtres
           </button>
@@ -112,7 +112,7 @@ export function PlatsExplorer({
 
       {/* Résultats */}
       <div>
-        <p className="mb-4 text-sm text-muted">
+        <p className="mb-4 text-sm text-warm">
           {filtres.length} plat{filtres.length > 1 ? "s" : ""}
         </p>
 
@@ -123,11 +123,11 @@ export function PlatsExplorer({
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-black/10 p-10 text-center text-muted">
+          <div className="rounded-2xl border border-dashed border-border p-10 text-center text-warm">
             <p>Aucun plat ne correspond à ces filtres.</p>
             <button
               onClick={reset}
-              className="mt-3 text-sm font-medium text-brand hover:underline"
+              className="mt-3 text-sm font-medium text-primary hover:underline"
             >
               Réinitialiser
             </button>
@@ -169,8 +169,8 @@ function Pill({
       aria-pressed={active}
       className={`rounded-full px-3 py-1 text-sm transition-colors ${
         active
-          ? "bg-brand text-brand-foreground"
-          : "border border-black/10 bg-white text-foreground/80 hover:border-brand/40"
+          ? "bg-primary text-primary-foreground"
+          : "border border-border bg-background text-foreground/80 hover:border-primary/40"
       }`}
     >
       {children}

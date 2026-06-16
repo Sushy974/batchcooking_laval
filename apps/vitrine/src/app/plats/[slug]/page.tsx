@@ -53,7 +53,7 @@ export default async function PlatPage({
     <article className="mx-auto max-w-5xl px-4 py-10">
       <Link
         href="/plats"
-        className="inline-flex items-center gap-1 text-sm text-muted hover:text-foreground"
+        className="inline-flex items-center gap-1 text-sm text-warm hover:text-foreground"
       >
         <ArrowLeft className="size-4" aria-hidden />
         Retour au menu
@@ -61,7 +61,7 @@ export default async function PlatPage({
 
       <div className="mt-6 grid gap-8 md:grid-cols-2">
         {/* Visuel */}
-        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-stone-100">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-secondary">
           {plat.image_principale ? (
             <Image
               src={plat.image_principale}
@@ -80,15 +80,15 @@ export default async function PlatPage({
 
         {/* Infos principales */}
         <div>
-          <span className="text-sm font-medium text-brand">
+          <span className="text-sm font-medium text-primary">
             {LABELS_CATEGORIE[plat.categorie]}
           </span>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">{plat.nom}</h1>
 
           {prix && (
             <p className="mt-2 text-lg">
-              <span className="text-muted">Prestation : </span>
-              <span className="font-semibold text-brand">{prix}</span>
+              <span className="text-warm">Prestation : </span>
+              <span className="font-semibold text-primary">{prix}</span>
             </p>
           )}
 
@@ -99,7 +99,7 @@ export default async function PlatPage({
               {plat.regimes.map((r) => (
                 <li
                   key={r}
-                  className="rounded-full bg-brand/10 px-3 py-1 text-sm font-medium text-brand"
+                  className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
                 >
                   {LABELS_REGIME[r]}
                 </li>
@@ -110,13 +110,13 @@ export default async function PlatPage({
           {/* Conservation / réchauffe */}
           <div className="mt-6 space-y-2 text-sm">
             {plat.conservation_jours != null && (
-              <p className="flex items-center gap-2 text-muted">
+              <p className="flex items-center gap-2 text-warm">
                 <Clock className="size-4 shrink-0" aria-hidden />
                 Se conserve {plat.conservation_jours} jours au réfrigérateur
               </p>
             )}
             {plat.mode_rechauffe && (
-              <p className="flex items-center gap-2 text-muted">
+              <p className="flex items-center gap-2 text-warm">
                 <Microwave className="size-4 shrink-0" aria-hidden />
                 {plat.mode_rechauffe}
               </p>
@@ -125,7 +125,7 @@ export default async function PlatPage({
 
           <Link
             href="/contact"
-            className="mt-8 inline-flex rounded-full bg-brand px-6 py-3 text-sm font-medium text-brand-foreground transition-opacity hover:opacity-90"
+            className="mt-8 inline-flex rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
             Composer mon menu avec ce plat
           </Link>
@@ -184,7 +184,7 @@ export default async function PlatPage({
               {plat.saison.map((s) => (
                 <li
                   key={s}
-                  className="rounded-full bg-stone-100 px-3 py-1 text-sm text-muted"
+                  className="rounded-full bg-secondary px-3 py-1 text-sm text-warm"
                 >
                   {LABELS_SAISON[s]}
                 </li>
@@ -205,7 +205,7 @@ function DetailCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-black/5 bg-white p-5 shadow-sm">
+    <section className="rounded-2xl border border-border bg-background p-5 shadow-sm">
       <h2 className="mb-3 font-semibold">{title}</h2>
       {children}
     </section>
@@ -222,8 +222,8 @@ function Row({
   icon?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between border-b border-black/5 py-1 last:border-0">
-      <dt className="flex items-center gap-1.5 text-muted">
+    <div className="flex items-center justify-between border-b border-border py-1 last:border-0">
+      <dt className="flex items-center gap-1.5 text-warm">
         {icon && <Flame className="size-3.5" aria-hidden />}
         {label}
       </dt>

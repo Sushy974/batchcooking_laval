@@ -6,9 +6,9 @@ export function PlatCard({ plat }: { plat: Plat }) {
   return (
     <Link
       href={`/plats/${plat.slug}`}
-      className="group overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm transition-shadow hover:shadow-md"
+      className="group overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-shadow hover:shadow-md"
     >
-      <div className="relative aspect-[4/3] bg-stone-100">
+      <div className="relative aspect-[4/3] bg-secondary">
         {plat.image_principale ? (
           <Image
             src={plat.image_principale}
@@ -26,7 +26,7 @@ export function PlatCard({ plat }: { plat: Plat }) {
 
       <div className="p-4">
         <h3 className="font-semibold">{plat.nom}</h3>
-        <p className="mt-1 line-clamp-2 text-sm text-muted">
+        <p className="mt-1 line-clamp-2 text-sm text-warm">
           {plat.description_courte}
         </p>
 
@@ -35,7 +35,7 @@ export function PlatCard({ plat }: { plat: Plat }) {
             {plat.regimes.map((r) => (
               <li
                 key={r}
-                className="rounded-full bg-stone-100 px-2 py-0.5 text-xs text-muted"
+                className="rounded-full bg-secondary px-2 py-0.5 text-xs text-warm"
               >
                 {LABELS_REGIME[r]}
               </li>
