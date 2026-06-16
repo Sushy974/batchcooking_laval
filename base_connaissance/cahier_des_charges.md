@@ -10,14 +10,54 @@
 
 ## 🛠️ 1. Architecture Technique & Choix Technologiques
 
-### Front-End (Unique Techno) : Next.js (React) / TypeScript
+### Front-End (Unique Techno) : Next.js (React) / TypeScript — Monorepo
 *   **Pourquoi ?** Même écosystème pour l'interface publique (Vitrine) et le back-office (Admin).
 *   **Performance Vitrine :** ISR (Incremental Static Regeneration) ou SSR de Next.js → chargement instantané, excellent SEO, et mise à jour dès qu'Emma modifie la base.
+*   **Structure monorepo (npm workspaces) :** deux apps Next **séparées** + un package de code partagé.
+    ```
+    apps/vitrine/      Next public (SSR/ISR) — port 3000
+    apps/admin/        Next back-office (auth) — port 3001
+    packages/core/     types, schémas Zod, repositories, use cases, conteneur DI, firebase
+    ```
+    Chaque app transpile `@batchcooking/core` (`transpilePackages`). Avantages : public et back-office déployables/lançables indépendamment, mais 100 % du domaine est mutualisé dans `core`.
 
 ### Back-End & Base de données : Firebase Firestore
 *   **Architecture :** Communication directe du Front vers Firestore (pas d'API intermédiaire → coûts limités). C'est **parfaitement adapté ici** puisqu'il n'y a ni paiement ni logique serveur sensible.
 *   **Stockage des médias :** **Firebase Storage** pour les photos (plats, formules). On ne stocke jamais l'image dans Firestore : on stocke son **URL**. Documents légers, rendu rapide.
-*   **Fichiers d'environnement :** Fichiers `.env.local` pour masquer les clés de configuration Firebase.
+*   **Fichiers d'environnement :** un fichier d'env par environnement (voir ci-dessous) pour masquer les clés de configuration Firebase.
+
+### 🌱 3 environnements de travail distincts
+L'app (vitrine + admin) tourne dans **3 environnements**, sélectionnés par variable d'env :
+
+| Environnement | Source de données | Clés Firebase | Script |
+|---|---|---|---|
+| **development** | `mock` — fausse base locale (fixtures TS), aucun appel réseau | aucune | `npm run dev` |
+| **staging** | `firestore` — projet Firebase de **test** (compte Google du dev) | `.env.staging.local` | `npm run dev:staging` / `build:staging` / `start:staging` |
+| **production** | `firestore` — projet Firebase du **client** (compte Google du client) | `.env.production.local` | `build:production` / `start:production` |
+
+*   **Clés en `*.local`** (non versionnées) ; les flags de dev et des gabarits `*.example` sont versionnés. Les clés Firebase web sont **publiques par nature** (injectées au build) — la sécurité repose sur les Firestore Rules.
+*   **Lancement (VS Code `.vscode/launch.json`)** : 6 configurations — `vitrine_dev/stg/prod` et `admin_dev/stg/prod` — chacune lance l'app voulue avec l'env voulu.
+
+### 🧅 Clean Architecture : UI → UseCase → Repository
+Le flux de dépendances est strict et à sens unique :
+
+```
+UI (Server/Client Component)
+  └── dépend de →  UseCase            (packages/core/src/usecases/)
+                     └── dépend de →  Repository (abstrait)  (packages/core/src/repositories/*.repository.ts)
+                                        ├── FakeXxxRepository       (dev — fixtures locales)
+                                        └── FirestoreXxxRepository  (staging/prod — Firestore)
+```
+
+*   **L'UI ne connaît QUE les use cases.** Elle n'importe ni Firestore, ni les repositories. Ex. : `await useCases.getConfig.execute()`.
+*   **Repository = pattern à 3 classes par entité** : une **mère abstraite** (`ConfigGeneraleRepository`…) + deux **enfants** (`Fake…` / `Firestore…`). Ajouter une source (émulateur, tests) = un nouvel enfant, sans rien casser.
+*   **Use case** : une classe par cas d'usage (`GetConfigUseCase`, `GetPlatsUseCase`…), qui reçoit un **repository abstrait** par injection dans son constructeur — il ignore l'implémentation concrète.
+*   **Conteneur d'injection** (`packages/core/src/container.ts`, le « composition root ») : choisit Fake/Firestore selon `NEXT_PUBLIC_DATA_SOURCE`, injecte les repos dans les use cases, et expose le singleton `useCases`. C'est **lui** (et lui seul) qui « choisit le bon repo selon la config lancée ».
+*   **Injection de dépendances en Next.js** (équivalents Flutter) :
+    *   **Côté serveur** (vitrine SSR/ISR) : on importe directement le singleton `useCases`. Un module ES est un singleton évalué une fois → c'est l'équivalent du registre `get_it`. Pas besoin de contexte React (il n'existe pas au moment du fetch serveur).
+    *   **Côté client** (admin) : `@batchcooking/core/client` fournit `UseCasesProvider` (= `Provider`/`InheritedWidget`) et le hook `useUseCases()` (= `context.read<UseCases>()`). On peut surcharger l'instance injectée (tests, Storybook) via la prop `value`.
+*   **Pourquoi un mock en dev ?** Développer hors-ligne, rapidement, avec des données reproductibles, et ne consommer de quota Firebase qu'à partir du staging.
+*   **Init Firebase paresseuse** : les services Firebase ne s'initialisent qu'à la première utilisation (getters `getDb()`/`getFirebaseAuth()`), pour ne jamais planter en `mock`/au build avec des clés vides.
 *   **Sécurité (Firestore Rules) :**
     *   `config_generale`, `pages`, `plats`, `formules` : **Lecture publique** (`allow read: if true;`), **Écriture réservée à Emma** (`allow write: if request.auth.uid == EMMA_UID;`).
     *   **Aucune écriture publique** : le site ne fait que **lire** (vitrine pure). Toute écriture passe par le compte d'Emma.

@@ -1,0 +1,53 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "vitrine_dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "command": "npm run dev -w vitrine"
+    },
+    {
+      "name": "vitrine_stg",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "command": "npm run dev:staging -w vitrine"
+    },
+    {
+      "name": "vitrine_prod",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "command": "npm run dev:production -w vitrine"
+    },
+    {
+      "name": "admin_dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "command": "npm run dev -w admin"
+    },
+    {
+      "name": "admin_stg",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "command": "npm run dev:staging -w admin"
+    },
+    {
+      "name": "admin_prod",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "command": "npm run dev:production -w admin"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "vitrine + admin (dev)",
+      "configurations": ["vitrine_dev", "admin_dev"]
+    }
+  ]
+}

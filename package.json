@@ -1,0 +1,20 @@
+{
+  "name": "batchcooking-laval",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:vitrine": "npm run dev -w vitrine",
+    "dev:admin": "npm run dev -w admin",
+    "build:vitrine": "npm run build -w vitrine",
+    "build:admin": "npm run build -w admin",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^11.0.0"
+  }
+}
