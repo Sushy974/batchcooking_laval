@@ -1,0 +1,37 @@
+page: "Contact"
+route: "/contact"
+objectif: "Permettre de contacter Emma (aucun formulaire en base en V1)"
+sources_donnees:
+  - "page type_page=contact (data_contenu : toggles d'affichage)"
+  - "config_generale (valeurs réelles des coordonnées)"
+etat_erreur: "page absente ou mauvais type -> 404"
+
+sections:
+  - id: entete
+    elements:
+      - titre: page.titre
+      - intro: data_contenu.intro
+
+  - id: moyens_contact
+    role: "cartes cliquables ; chacune affichée selon le toggle ET la dispo de la donnée"
+    cartes:
+      - telephone:
+          condition: "data_contenu.afficher_telephone ET config.telephone"
+          contenu: config.telephone
+          action: "lien tel:"
+          icone: "telephone"
+      - email:
+          condition: "data_contenu.afficher_email ET config.email"
+          contenu: config.email
+          action: "lien mailto:"
+          icone: "enveloppe"
+      - instagram:
+          condition: "data_contenu.afficher_instagram ET config.reseaux_sociaux.instagram"
+          contenu: "@handle"
+          action: "lien externe instagram.com"
+          icone: "arobase"
+      - zone:
+          contenu: config.zone_intervention
+          icone: "lieu"
+
+note: "Pas de formulaire de réservation enregistré en base (prévu V2)."

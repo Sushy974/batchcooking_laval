@@ -1,0 +1,25 @@
+page: "À propos"
+route: "/a-propos"
+objectif: "Présenter Emma, son parcours, ses valeurs"
+sources_donnees:
+  - "page type_page=a_propos (data_contenu)"
+etat_erreur: "page absente ou mauvais type -> 404"
+
+sections:
+  - id: entete
+    disposition: "portrait + texte côte à côte (empilés en mobile)"
+    elements:
+      - portrait: data_contenu.portrait   # image ronde, optionnelle
+      - titre: page.titre
+      - intro: data_contenu.intro
+
+  - id: sections_texte
+    repetition: "data_contenu.sections"
+    element_unitaire:
+      - titre: section.titre
+      - texte: section.texte   # multi-lignes possibles
+
+  - id: citation
+    condition: "si data_contenu.citation présent"
+    contenu: data_contenu.citation
+    style: "citation en exergue (barre latérale couleur marque, italique)"

@@ -1,0 +1,22 @@
+page: "Comment ça marche"
+route: "/comment-ca-marche"
+objectif: "Expliquer le déroulé d'une prestation à domicile (pédagogie)"
+sources_donnees:
+  - "page type_page=comment_ca_marche (data_contenu)"
+etat_erreur: "page absente ou mauvais type -> 404"
+
+sections:
+  - id: entete
+    elements:
+      - titre: page.titre
+      - intro: data_contenu.intro
+
+  - id: etapes
+    role: "liste ordonnée d'étapes"
+    repetition: "data_contenu.etapes"
+    element_unitaire:
+      - numero: etape.numero
+      - icone: etape.icone   # ex. list, shopping-cart, chef-hat, utensils
+      - titre: etape.titre
+      - texte: etape.texte
+    disposition_actuelle: "cartes empilées, pastille ronde (icône ou numéro) + texte"

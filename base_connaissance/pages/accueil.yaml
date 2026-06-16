@@ -1,0 +1,73 @@
+page: "Accueil"
+route: "/"
+objectif: "Présenter le service, mettre en avant formules et plats, inciter au contact"
+sources_donnees:
+  - config_generale
+  - "page type_page=accueil (data_contenu)"
+  - "formules disponibles"
+  - "plats mis en avant"
+
+sections:
+  - id: hero
+    role: "accroche principale"
+    elements:
+      - titre: data_contenu.hero.titre
+      - sous_titre: data_contenu.hero.sous_titre
+      - cta_principal: { label: data_contenu.hero.cta_label, lien: data_contenu.hero.cta_lien }
+      - cta_secondaire: { label: "Me contacter", lien: "/contact" }
+    note: "image hero possible (data_contenu.hero.image) mais vide en l'état -> fond dégradé couleur marque"
+
+  - id: arguments
+    role: "3 arguments de réassurance"
+    repetition: "liste data_contenu.arguments"
+    element_unitaire:
+      - icone: argument.icone   # noms d'icônes (clock, heart, leaf...)
+      - titre: argument.titre
+      - texte: argument.texte
+    disposition_actuelle: "grille 3 colonnes, cartes centrées"
+
+  - id: section_formules
+    condition: "data_contenu.section_formules.afficher = true"
+    elements:
+      - titre_section: data_contenu.section_formules.titre
+      - lien: { label: "Toutes les formules", lien: "/formules" }
+      - liste: "cartes formule (voir composant carte_formule)"
+
+  - id: section_plats
+    condition: "data_contenu.section_plats.afficher = true"
+    elements:
+      - titre_section: data_contenu.section_plats.titre
+      - lien: { label: "Voir le menu", lien: "/plats" }
+      - liste: "cartes plat (voir composant carte_plat)"
+
+  - id: section_zone
+    role: "zone d'intervention"
+    elements:
+      - titre: data_contenu.section_zone.titre
+      - texte: data_contenu.section_zone.texte
+      - liste_communes: config.communes_couvertes   # pastilles
+
+  - id: cta_final
+    elements:
+      - titre: data_contenu.cta_final.titre
+      - texte: data_contenu.cta_final.texte
+      - bouton: { label: data_contenu.cta_final.label, lien: data_contenu.cta_final.lien }
+
+composants:
+  carte_formule: &carte_formule
+    champs:
+      - formule.nom
+      - formule.prix (€)
+      - formule.description
+      - formule.nombre_repas
+      - formule.nombre_personnes
+      - formule.duree_heures
+      - badge_courses: "Courses incluses / Vous faites les courses / Courses en option"
+    lien: "/formules/{slug}"
+  carte_plat: &carte_plat
+    champs:
+      - image_principale ou placeholder (🍽️)
+      - plat.nom
+      - plat.description_courte
+      - badges_regimes: "ex. Végétarien, Sans gluten"
+    lien: "/plats/{slug}"

@@ -1,0 +1,30 @@
+page: "Liste des formules"
+route: "/formules"
+objectif: "Présenter les offres de prestation"
+sources_donnees:
+  - "formules disponibles"
+
+sections:
+  - id: entete
+    elements:
+      - titre: "Les formules"
+      - sous_titre: "Emma se déplace chez vous pour cuisiner vos repas de la semaine…"
+
+  - id: liste
+    elements:
+      - grille: "cartes formule (voir composant)"
+      - etat_vide: "message 'Aucune formule disponible pour le moment.'"
+
+composants:
+  carte_formule:
+    champs:
+      - formule.nom
+      - formule.prix (€, prix fixe)
+      - formule.description
+      - formule.nombre_repas (repas)
+      - formule.nombre_personnes (pers.)
+      - formule.duree_heures (h)
+      - badge_courses: "Courses incluses / Vous faites les courses / Courses en option"
+    lien: "/formules/{slug}"
+
+disposition_actuelle: "grille 2-3 colonnes"

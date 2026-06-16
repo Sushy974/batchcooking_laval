@@ -1,0 +1,39 @@
+page: "Détail d'un plat"
+route: "/plats/[slug]"
+objectif: "Présenter un plat en détail (composition, allergènes, conservation, nutrition)"
+sources_donnees:
+  - "plat (par slug)"
+etat_erreur: "slug inconnu -> page 404"
+
+sections:
+  - id: fil_retour
+    elements:
+      - lien: { label: "Retour au menu", lien: "/plats", icone: "fleche-gauche" }
+
+  - id: bloc_principal
+    disposition: "2 colonnes (visuel | infos)"
+    visuel:
+      - image_principale ou placeholder (🍽️)
+    infos:
+      - categorie: "libellé (Entrée, Plat, Dessert, Accompagnement)"
+      - nom: plat.nom
+      - prix_prestation: "ex. '4 – 6 €' ou '5 €' (PRESTATION uniquement, jamais le coût matière)"
+      - description: plat.description
+      - badges_regimes: "ex. Sans gluten"
+      - conservation: "Se conserve {conservation_jours} jours au réfrigérateur (icône horloge)"
+      - mode_rechauffe: "ex. Micro-ondes 2 min ou poêle 5 min (icône)"
+      - cta: { label: "Composer mon menu avec ce plat", lien: "/contact" }
+
+  - id: cartes_detail
+    role: "grille de cartes, chacune affichée seulement si la donnée existe"
+    cartes:
+      - ingredients: "liste à puces (plat.ingredients)"
+      - allergenes: "badges (style avertissement / ambre) — libellés INCO"
+      - valeurs_nutritionnelles:
+          - "Calories (kcal)"
+          - "Protéines (g)"
+          - "Glucides (g)"
+          - "Lipides (g)"
+      - saison: "badges (Printemps, Été, Automne, Hiver)"
+
+note_pricing: "Le coût matière première (cout_matiere_premiere_moyen) N'EST PAS affiché publiquement."

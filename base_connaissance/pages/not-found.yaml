@@ -1,0 +1,13 @@
+page: "404 — Page introuvable"
+route: "(toute route inconnue)"
+objectif: "Erreur 404 conviviale"
+sources_donnees: []
+
+sections:
+  - id: contenu
+    elements:
+      - emoji: "🍽️"
+      - titre: "Page introuvable"
+      - texte: "Cette page n'existe pas ou a été déplacée."
+      - bouton: { label: "Retour à l'accueil", lien: "/" }
+    disposition_actuelle: "bloc centré"

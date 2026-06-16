@@ -1,0 +1,20 @@
+page: "FAQ"
+route: "/faq"
+objectif: "Répondre aux questions fréquentes"
+sources_donnees:
+  - "page type_page=faq (data_contenu)"
+etat_erreur: "page absente ou mauvais type -> 404"
+
+sections:
+  - id: entete
+    elements:
+      - titre: page.titre
+      - intro: data_contenu.intro
+
+  - id: questions
+    role: "accordéon (chaque item dépliable)"
+    repetition: "data_contenu.questions"
+    element_unitaire:
+      - question: question.question   # libellé cliquable + icône +/-
+      - reponse: question.reponse     # affichée au dépliage
+    disposition_actuelle: "liste de cartes <details> natives"

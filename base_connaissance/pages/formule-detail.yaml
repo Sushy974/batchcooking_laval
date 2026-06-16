@@ -1,0 +1,36 @@
+page: "Détail d'une formule"
+route: "/formules/[slug]"
+objectif: "Détailler une prestation (contenu, prix, option courses)"
+sources_donnees:
+  - "formule (par slug)"
+etat_erreur: "slug inconnu -> page 404"
+
+sections:
+  - id: fil_retour
+    elements:
+      - lien: { label: "Toutes les formules", lien: "/formules", icone: "fleche-gauche" }
+
+  - id: bloc_principal
+    disposition: "2 colonnes (visuel | infos)"
+    visuel:
+      - image_principale ou placeholder (🧑‍🍳)
+    infos:
+      - nom: formule.nom
+      - prix: "formule.prix € (prix FIXE du service)"
+      - description: formule.description
+      - faits_cles:   # 3 vignettes
+          - { valeur: formule.nombre_repas, label: "repas", icone: "couverts" }
+          - { valeur: formule.nombre_personnes, label: "personnes", icone: "personnes" }
+          - { valeur: "{formule.duree_heures} h", label: "sur place", icone: "horloge" }
+      - badge_courses: "Courses incluses / Vous faites les courses / Courses en option"
+      - encart_mention_courses:
+          condition: "si formule.mention_courses présent"
+          contenu: formule.mention_courses   # ex. supplément = montant des courses + service
+          style: "encart info (ambre)"
+      - cta: { label: "Réserver cette formule", lien: "/contact" }
+
+  - id: inclus_non_inclus
+    disposition: "2 colonnes"
+    colonnes:
+      - inclus: "liste formule.inclus (icône check verte)"
+      - non_inclus: "liste formule.non_inclus (icône croix grise)"

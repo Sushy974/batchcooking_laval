@@ -1,0 +1,47 @@
+page: "Gabarit global (présent sur toutes les pages vitrine)"
+role: "Cadre commun : bandeau promo + en-tête + pied de page"
+sources_donnees:
+  - config_generale
+
+elements_communs:
+  bandeau_promo:
+    condition: "affiché seulement si config.banniere_active = true ET banniere_message non vide"
+    contenu:
+      - config.banniere_message
+    style_actuel: "barre pleine largeur, fond couleur marque, texte centré"
+
+  en_tete:
+    comportement: "sticky en haut au scroll, fond translucide"
+    elements:
+      - logo_texte: config.nom_societe (lien vers /)
+      - navigation:
+          - { label: "Accueil", lien: "/" }
+          - { label: "Les formules", lien: "/formules" }
+          - { label: "Le menu", lien: "/plats" }
+          - { label: "Comment ça marche", lien: "/comment-ca-marche" }
+          - { label: "À propos", lien: "/a-propos" }
+      - bouton_cta: { label: "Réserver", lien: "/contact", style: "plein, couleur marque" }
+    responsive: "navigation masquée < md (prévoir un menu mobile, non encore implémenté)"
+
+  pied_de_page:
+    colonnes:
+      - bloc_societe:
+          - config.nom_societe
+          - config.zone_intervention (avec icône lieu)
+      - bloc_contact:
+          - config.telephone (lien tel:)
+          - config.email (lien mailto:)
+          - config.reseaux_sociaux.instagram (lien externe)
+      - bloc_legal:
+          - "© {config.nom_societe}"
+          - "lien 'Mentions légales' -> /mentions-legales"
+
+seo:
+  - "JSON-LD Schema.org LocalBusiness injecté (nom, téléphone, email, description, communes desservies)"
+  - "metadata titre/description depuis config.seo_defaut"
+
+palette_actuelle:
+  fond: "crème (#fbf9f4)"
+  texte: "stone-900 (#1c1917)"
+  marque: "vert (#15803d)"
+  muted: "stone-500"

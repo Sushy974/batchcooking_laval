@@ -1,0 +1,17 @@
+page: "Mentions légales"
+route: "/mentions-legales"
+objectif: "Page légale (gabarit générique réutilisable : CGV, confidentialité…)"
+sources_donnees:
+  - "page type_page=mentions_legales (data_contenu)"
+etat_erreur: "page absente ou mauvais type -> 404"
+
+sections:
+  - id: titre
+    contenu: page.titre
+
+  - id: blocs
+    repetition: "data_contenu.blocs"
+    element_unitaire:
+      - titre: bloc.titre
+      - texte: bloc.texte   # multi-lignes
+    disposition_actuelle: "sections de texte empilées"

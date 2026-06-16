@@ -1,0 +1,44 @@
+page: "Menu / Catalogue de plats"
+route: "/plats"
+objectif: "Parcourir le répertoire de plats et filtrer"
+sources_donnees:
+  - "plats disponibles"
+
+sections:
+  - id: entete
+    elements:
+      - titre: "Le menu"
+      - sous_titre: "Un aperçu des plats qu'Emma peut cuisiner pour vous…"
+
+  - id: filtres
+    role: "panneau de filtres (colonne gauche en desktop)"
+    interactif: true
+    groupes:
+      - categorie:
+          type: "sélection unique"
+          options: "Tout + catégories présentes (Entrée, Plat, Dessert, Accompagnement)"
+      - regime:
+          type: "multi-sélection (inclusif : le plat doit avoir TOUS les régimes cochés)"
+          options: "régimes présents (Végétarien, Vegan, Sans gluten, Sans lactose)"
+      - sans_allergene:
+          type: "multi-sélection (exclusif : masque les plats contenant l'allergène)"
+          options: "allergènes présents dans le catalogue (14 possibles, règlement INCO)"
+      - reinitialiser: "lien affiché si au moins un filtre actif"
+    note: "les options de filtres sont calculées dynamiquement (uniquement celles présentes dans les données)"
+
+  - id: resultats
+    elements:
+      - compteur: "{n} plat(s)"
+      - grille: "cartes plat (voir composant carte_plat)"
+      - etat_vide: "message 'Aucun plat ne correspond à ces filtres.' + bouton Réinitialiser"
+
+composants:
+  carte_plat:
+    champs:
+      - image_principale ou placeholder (🍽️)
+      - plat.nom
+      - plat.description_courte
+      - badges_regimes
+    lien: "/plats/{slug}"
+
+disposition_actuelle: "2 colonnes [filtres 16rem | résultats] en desktop ; grille résultats 2-3 colonnes"
