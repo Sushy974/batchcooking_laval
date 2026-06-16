@@ -52,13 +52,13 @@ export function EmmaChatbot() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-0 right-2 z-50 flex items-end gap-3 sm:right-4">
       {/* Panneau de discussion */}
       {ouvert && (
         <section
           role="dialog"
           aria-label="Discuter avec Emma"
-          className="animate-chat-pop flex h-[26rem] w-[20rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl"
+          className="animate-chat-pop mb-4 flex h-[26rem] w-[20rem] max-w-[calc(100vw-8rem)] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl"
         >
           {/* En-tête */}
           <header className="flex items-center gap-3 bg-dark px-4 py-3 text-dark-foreground">
@@ -113,7 +113,7 @@ export function EmmaChatbot() {
         <button
           type="button"
           onClick={() => setOuvert(true)}
-          className="animate-chat-pop max-w-[14rem] rounded-2xl rounded-br-sm border border-border bg-background px-4 py-2 text-left text-sm shadow-lg"
+          className="animate-chat-pop mb-12 max-w-[12rem] rounded-2xl rounded-br-sm border border-border bg-background px-4 py-2 text-left text-sm shadow-lg"
         >
           Une question ? Discutons&nbsp;👋
         </button>
@@ -125,13 +125,13 @@ export function EmmaChatbot() {
         onClick={() => setOuvert((o) => !o)}
         aria-label={ouvert ? "Fermer la discussion" : "Discuter avec Emma"}
         aria-expanded={ouvert}
-        className="relative origin-bottom-right transition hover:scale-105 active:scale-95"
+        className="relative origin-bottom translate-y-[16%] transition hover:scale-105 active:scale-95"
       >
         <span className={ouvert ? "block" : "block animate-mascotte"}>
-          <Mascotte taille={156} />
+          <Mascotte taille={210} />
         </span>
         {!ouvert && (
-          <span className="absolute right-6 top-6 flex size-4" aria-hidden>
+          <span className="absolute right-10 top-8 flex size-4" aria-hidden>
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-60" />
             <span className="relative inline-flex size-4 rounded-full border-2 border-background bg-primary" />
           </span>
