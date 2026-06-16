@@ -7,3 +7,10 @@ export class GetPageBySlugUseCase {
     return this.repo.getBySlug(slug);
   }
 }
+
+export class GetPagesUseCase {
+  constructor(private readonly repo: PageRepository) {}
+  execute(): Promise<Page[]> {
+    return this.repo.getAll();
+  }
+}

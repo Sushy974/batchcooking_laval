@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { UseCasesProvider } from "@batchcooking/core/client";
+
+import { AdminNav } from "@/components/admin-nav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,9 +30,14 @@ export default function RootLayout({
       lang="fr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full">
         {/* Injection de dépendances côté client (équivalent Provider Flutter). */}
-        <UseCasesProvider>{children}</UseCasesProvider>
+        <UseCasesProvider>
+          <div className="flex min-h-screen">
+            <AdminNav />
+            <main className="flex-1 overflow-x-auto">{children}</main>
+          </div>
+        </UseCasesProvider>
       </body>
     </html>
   );

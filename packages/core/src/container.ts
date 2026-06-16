@@ -20,7 +20,7 @@ import {
   GetFormuleBySlugUseCase,
   GetFormulesUseCase,
 } from "./usecases/formule.usecases";
-import { GetPageBySlugUseCase } from "./usecases/page.usecases";
+import { GetPageBySlugUseCase, GetPagesUseCase } from "./usecases/page.usecases";
 import {
   GetPlatBySlugUseCase,
   GetPlatsMisEnAvantUseCase,
@@ -74,6 +74,7 @@ export function createUseCases(source: DataSourceName = getDataSourceName()) {
     getFormules: new GetFormulesUseCase(repos.formules),
     getFormuleBySlug: new GetFormuleBySlugUseCase(repos.formules),
     getPage: new GetPageBySlugUseCase(repos.pages),
+    getPages: new GetPagesUseCase(repos.pages),
   };
 }
 

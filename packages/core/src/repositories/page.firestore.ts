@@ -8,6 +8,20 @@ import { PageRepository } from "./page.repository";
 
 /** Implémentation STAGING / PRODUCTION : communique avec Firestore. */
 export class FirestorePageRepository extends PageRepository {
+  async getAll(): Promise<Page[]> {
+    const snap = await getDocs(collection(getDb(), COLLECTIONS.pages));
+    const pages: Page[] = [];
+    for (const d of snap.docs) {
+      const parsed = pageSchema.safeParse(d.data());
+      if (parsed.success) {
+        pages.push({ id: d.id, ...parsed.data } as Page);
+      } else {
+        console.error(`Page "${d.id}" : data_contenu invalide`, parsed.error.issues);
+      }
+    }
+    return pages;
+  }
+
   async getBySlug(slug: string): Promise<Page | null> {
     const snap = await getDocs(
       query(collection(getDb(), COLLECTIONS.pages), where("slug", "==", slug), limit(1)),
