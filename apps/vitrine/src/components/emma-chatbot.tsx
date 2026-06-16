@@ -125,15 +125,15 @@ export function EmmaChatbot() {
         onClick={() => setOuvert((o) => !o)}
         aria-label={ouvert ? "Fermer la discussion" : "Discuter avec Emma"}
         aria-expanded={ouvert}
-        className="relative flex size-16 items-center justify-center rounded-full border border-border bg-background shadow-lg transition hover:scale-105 active:scale-95"
+        className="relative origin-bottom-right transition hover:scale-105 active:scale-95"
       >
-        <span className={ouvert ? "" : "animate-mascotte"}>
-          <Mascotte taille={52} />
+        <span className={ouvert ? "block" : "block animate-mascotte"}>
+          <Mascotte taille={156} />
         </span>
         {!ouvert && (
-          <span className="absolute -right-0.5 -top-0.5 flex size-3.5" aria-hidden>
+          <span className="absolute right-6 top-6 flex size-4" aria-hidden>
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-60" />
-            <span className="relative inline-flex size-3.5 rounded-full border-2 border-background bg-primary" />
+            <span className="relative inline-flex size-4 rounded-full border-2 border-background bg-primary" />
           </span>
         )}
       </button>
@@ -142,25 +142,30 @@ export function EmmaChatbot() {
 }
 
 function Mascotte({ taille }: { taille: number }) {
+  const [chargee, setChargee] = useState(false);
   return (
     <span
-      className="relative flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-secondary"
+      className="relative block shrink-0"
       style={{ width: taille, height: taille }}
     >
-      {/* Repli emoji si l'image n'est pas encore déposée. */}
-      <span
-        aria-hidden
-        className="select-none"
-        style={{ fontSize: taille * 0.55 }}
-      >
-        👩‍🍳
-      </span>
+      {/* Repli emoji tant que l'image (PNG détouré) n'est pas chargée / absente. */}
+      {!chargee && (
+        <span
+          aria-hidden
+          className="absolute inset-0 flex select-none items-center justify-center"
+          style={{ fontSize: taille * 0.5 }}
+        >
+          👩‍🍳
+        </span>
+      )}
       <Image
         src="/emma.png"
         alt=""
         fill
         sizes={`${taille}px`}
-        className="object-cover"
+        className="object-contain drop-shadow-lg"
+        onLoad={() => setChargee(true)}
+        onError={() => setChargee(false)}
       />
     </span>
   );
