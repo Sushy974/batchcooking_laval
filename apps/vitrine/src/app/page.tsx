@@ -61,10 +61,10 @@ export default async function Home() {
         </div>
 
         <div className="relative min-h-64 overflow-hidden bg-secondary lg:min-h-0">
-          {/* Image fixe du hero. Fichier à déposer dans apps/vitrine/public/hero.webp
+          {/* Image fixe du hero. Fichier à déposer dans apps/vitrine/public/hero.png
               (repli automatique sur l'image définie en base si elle existe un jour). */}
           <Image
-            src={hero?.image || "/hero.webp"}
+            src={hero?.image || "/hero.png"}
             alt=""
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
