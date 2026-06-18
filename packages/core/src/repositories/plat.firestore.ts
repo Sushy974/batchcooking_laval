@@ -1,15 +1,20 @@
 import {
+  addDoc,
   collection,
+  deleteDoc,
+  doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 
 import { COLLECTIONS } from "../constants";
 import { getDb } from "../firebase";
-import type { Plat } from "../types/models";
+import type { PlatInput, Plat } from "../types/models";
 
 import { PlatRepository, type PlatQuery } from "./plat.repository";
 
@@ -42,5 +47,23 @@ export class FirestorePlatRepository extends PlatRepository {
     );
     const d = snap.docs[0];
     return d ? ({ id: d.id, ...d.data() } as Plat) : null;
+  }
+
+  async getById(id: string): Promise<Plat | null> {
+    const snap = await getDoc(doc(getDb(), COLLECTIONS.plats, id));
+    return snap.exists() ? ({ id: snap.id, ...snap.data() } as Plat) : null;
+  }
+
+  async creer(data: PlatInput): Promise<string> {
+    const ref = await addDoc(collection(getDb(), COLLECTIONS.plats), data);
+    return ref.id;
+  }
+
+  async modifier(id: string, data: PlatInput): Promise<void> {
+    await setDoc(doc(getDb(), COLLECTIONS.plats, id), data);
+  }
+
+  async supprimer(id: string): Promise<void> {
+    await deleteDoc(doc(getDb(), COLLECTIONS.plats, id));
   }
 }

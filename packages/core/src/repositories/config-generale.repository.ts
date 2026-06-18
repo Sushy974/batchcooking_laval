@@ -7,4 +7,6 @@ import type { ConfigGenerale } from "../types/models";
 export abstract class ConfigGeneraleRepository {
   /** Récupère le document de configuration unique. */
   abstract get(): Promise<ConfigGenerale | null>;
+  /** Remplace le document de configuration unique. */
+  abstract modifier(data: ConfigGenerale): Promise<void>;
 }

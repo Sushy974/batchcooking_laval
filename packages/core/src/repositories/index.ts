@@ -18,3 +18,7 @@ export { FirestoreFormuleRepository } from "./formule.firestore";
 export { PageRepository } from "./page.repository";
 export { FakePageRepository } from "./page.fake";
 export { FirestorePageRepository } from "./page.firestore";
+
+export { AuthRepository } from "./auth.repository";
+export { FakeAuthRepository } from "./auth.fake";
+export { FirebaseAuthRepository } from "./auth.firestore";

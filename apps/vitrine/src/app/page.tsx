@@ -5,6 +5,7 @@ import { FormuleCard } from "@/components/formule-card";
 import { Icon } from "@/components/icon";
 import { PlatCard } from "@/components/plat-card";
 import { Reveal } from "@/components/reveal";
+import { ZoneCarte } from "@/components/zone-carte";
 import {
   getAccueil,
   getConfig,
@@ -122,10 +123,10 @@ export default async function Home() {
               linkLabel="Toutes les formules"
             />
             <Reveal>
-              <div className="flex gap-6 overflow-x-auto pb-2">
-                {formules.map((f) => (
+              <div className="-mx-1 flex gap-6 overflow-x-auto px-1 pb-4 pt-8">
+                {formules.map((f, i) => (
                   <div key={f.id} className="w-72 shrink-0">
-                    <FormuleCard formule={f} />
+                    <FormuleCard formule={f} index={i} />
                   </div>
                 ))}
               </div>
@@ -164,16 +165,10 @@ export default async function Home() {
                 {contenu.section_zone.texte}
               </p>
               {config?.communes_couvertes?.length ? (
-                <ul className="flex flex-wrap gap-2">
-                  {config.communes_couvertes.map((c) => (
-                    <li
-                      key={c}
-                      className="rounded-full border border-border bg-cream px-3 py-1.5 text-xs font-medium transition-colors hover:border-primary hover:text-primary"
-                    >
-                      {c}
-                    </li>
-                  ))}
-                </ul>
+                <ZoneCarte
+                  communes={config.communes_couvertes}
+                  rayonKm={config.rayon_km}
+                />
               ) : null}
             </Reveal>
           </div>

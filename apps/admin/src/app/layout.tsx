@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { UseCasesProvider } from "@batchcooking/core/client";
 
-import { AdminNav } from "@/components/admin-nav";
+import { AuthProvider } from "@/components/auth-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -31,12 +31,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
-        {/* Injection de dépendances côté client (équivalent Provider Flutter). */}
+        {/* Injection de dépendances + état d'authentification (côté client). */}
         <UseCasesProvider>
-          <div className="flex min-h-screen">
-            <AdminNav />
-            <main className="flex-1 overflow-x-auto">{children}</main>
-          </div>
+          <AuthProvider>{children}</AuthProvider>
         </UseCasesProvider>
       </body>
     </html>

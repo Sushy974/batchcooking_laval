@@ -14,6 +14,7 @@ export * from "./usecases/config-generale.usecases";
 export * from "./usecases/plat.usecases";
 export * from "./usecases/formule.usecases";
 export * from "./usecases/page.usecases";
+export * from "./usecases/auth.usecases";
 
 // Conteneur d'injection : singleton `useCases` + fabrique + type
 export { createUseCases, useCases, type UseCases } from "./container";

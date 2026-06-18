@@ -98,3 +98,13 @@ export interface Formule {
   mis_en_avant: boolean;
   ordre: number;
 }
+
+// --- authentification --------------------------------------------------------
+export interface Utilisateur {
+  uid: string;
+  email: string | null;
+}
+
+// --- entrées d'écriture (sans l'id, généré/porté par le document) ------------
+export type PlatInput = Omit<Plat, "id">;
+export type FormuleInput = Omit<Formule, "id">;

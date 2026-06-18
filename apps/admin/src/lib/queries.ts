@@ -11,6 +11,10 @@ export const getConfig = cache(() => useCases.getConfig.execute());
 
 export const getAllPlats = cache(() => useCases.getPlats.execute());
 
+export const getPlatById = cache((id: string) =>
+  useCases.getPlatById.execute(id),
+);
+
 export const getAllFormules = cache(() => useCases.getFormules.execute());
 
 export const getAllPages = cache(() => useCases.getPages.execute());

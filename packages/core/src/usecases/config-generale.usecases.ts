@@ -14,3 +14,11 @@ export class GetConfigUseCase {
     return this.repo.get();
   }
 }
+
+export class ModifierConfigUseCase {
+  constructor(private readonly repo: ConfigGeneraleRepository) {}
+
+  execute(data: ConfigGenerale): Promise<void> {
+    return this.repo.modifier(data);
+  }
+}

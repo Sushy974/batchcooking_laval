@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { LogoutButton } from "./logout-button";
+
 const LINKS = [
   { href: "/", label: "Tableau de bord" },
   { href: "/plats", label: "Plats" },
@@ -10,7 +12,7 @@ const LINKS = [
 
 export function AdminNav() {
   return (
-    <aside className="w-56 shrink-0 border-r border-black/5 bg-white">
+    <aside className="flex w-56 shrink-0 flex-col border-r border-border bg-background">
       <div className="p-4">
         <p className="text-sm font-bold">Admin</p>
         <p className="text-xs text-muted">Le Batchcooking d&apos;Emma</p>
@@ -20,12 +22,13 @@ export function AdminNav() {
           <Link
             key={l.href}
             href={l.href}
-            className="rounded-lg px-3 py-2 text-foreground/80 transition-colors hover:bg-brand/5 hover:text-foreground"
+            className="rounded-lg px-3 py-2 text-foreground/80 transition-colors hover:bg-primary/5 hover:text-foreground"
           >
             {l.label}
           </Link>
         ))}
       </nav>
+      <LogoutButton />
     </aside>
   );
 }
