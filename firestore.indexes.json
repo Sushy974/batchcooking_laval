@@ -1,0 +1,30 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "plats",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "disponible", "order": "ASCENDING" },
+        { "fieldPath": "ordre", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "plats",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "disponible", "order": "ASCENDING" },
+        { "fieldPath": "mis_en_avant", "order": "ASCENDING" },
+        { "fieldPath": "ordre", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "formules",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "disponible", "order": "ASCENDING" },
+        { "fieldPath": "ordre", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

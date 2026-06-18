@@ -37,6 +37,11 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# firebase
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+
 # env files
 # On ignore tout par défaut (clés réelles dans les fichiers *.local)...
 .env*

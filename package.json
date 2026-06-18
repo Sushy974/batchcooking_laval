@@ -12,7 +12,9 @@
     "build:vitrine": "npm run build -w vitrine",
     "build:admin": "npm run build -w admin",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "firebase:deploy:staging": "firebase deploy --only firestore:rules,firestore:indexes --project staging",
+    "seed:staging": "PROJECT_ID=batchcooking-laval-staging GCLOUD_TOKEN=$(gcloud auth print-access-token) node --experimental-strip-types scripts/seed-firestore-rest.ts"
   },
   "devDependencies": {
     "dotenv-cli": "^11.0.0"
