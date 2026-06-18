@@ -7,10 +7,14 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ⚠️ Remplacer par l'UID réel du compte Firebase d'Emma.
+    // UID(s) autorisé(s) à écrire. Liste = on peut avoir un compte par
+    // environnement (staging / prod) avec le même fichier de règles.
     function isEmma() {
       return request.auth != null
-        && request.auth.uid == 'REMPLACER_PAR_UID_EMMA';
+        && request.auth.uid in [
+          'QiUKEqPZ3AVliVZ9FATcjsP6ysq2' // staging — n.chateau.pro@gmail.com
+          // , 'UID_EMMA_PROD'            // prod — compte de tatie Emma (à ajouter)
+        ];
     }
 
     match /config_generale/{docId} {
